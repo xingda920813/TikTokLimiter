@@ -40,6 +40,7 @@ public class PeriodicTaskService extends Service {
             if (!sInited) return START_NOT_STICKY;
         }
         new Thread(() -> {
+            sTask.run();
             final boolean fromAlarmManager = intent != null && intent.getBooleanExtra("fromAlarmManager", false);
             long delay = sDelayProvider.getDelay(fromAlarmManager);
             if (fromAlarmManager) {

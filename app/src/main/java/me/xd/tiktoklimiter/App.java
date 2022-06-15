@@ -2,7 +2,6 @@ package me.xd.tiktoklimiter;
 
 import android.app.ActivityManager;
 import android.app.Application;
-import android.app.admin.DevicePolicyManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
@@ -24,13 +23,12 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         PeriodicTaskService.init(Icon.createWithBitmap(Bitmap.createBitmap(32, 32, Bitmap.Config.ARGB_8888)), this::runOnce,
-                fromAlarmManager -> DelayProvider.EVERY_15_MINUTES);
+                fromAlarmManager -> DelayProvider.DAILY);
     }
 
     void runOnce() {
         startLauncher();
         killApps();
-        lockScreen();
         mute();
         killApps();
     }
@@ -49,12 +47,6 @@ public class App extends Application {
                 am.killBackgroundProcesses(pkg);
             }
         }
-    }
-
-    private void lockScreen() {
-        try {
-            getSystemService(DevicePolicyManager.class).lockNow();
-        } catch (final Exception ignored) {}
     }
 
     private void mute() {
