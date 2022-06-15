@@ -2,6 +2,7 @@ package me.xd.tiktoklimiter;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.app.admin.DevicePolicyManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
@@ -29,6 +30,7 @@ public class App extends Application {
     void runOnce() {
         startLauncher();
         killApps();
+        lockScreen();
         mute();
         killApps();
     }
@@ -45,6 +47,12 @@ public class App extends Application {
         for (final String pkg : PACKAGES) {
             am.killBackgroundProcesses(pkg);
         }
+    }
+
+    private void lockScreen() {
+        try {
+            getSystemService(DevicePolicyManager.class).lockNow();
+        } catch (final Exception ignored) {}
     }
 
     private void mute() {
