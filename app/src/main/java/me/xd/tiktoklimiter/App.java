@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.media.AudioManager;
 
+import java.util.Calendar;
+
 import me.xd.task.DelayProvider;
 import me.xd.task.PeriodicTaskService;
 
@@ -28,11 +30,27 @@ public class App extends Application {
     }
 
     void runOnce() {
+        if (!validateTime()) {
+            killApps();
+            return;
+        }
         startLauncher();
         killApps();
         lockScreen();
         mute();
         killApps();
+    }
+
+    private static boolean validateTime() {
+        final Calendar cal = Calendar.getInstance();
+        final int hour = cal.get(Calendar.HOUR_OF_DAY);
+        final int minute = cal.get(Calendar.MINUTE);
+        if (hour == 0) {
+            return minute <= 30;
+        } else if (hour == 23) {
+            return minute >= 30;
+        }
+        return false;
     }
 
     private void startLauncher() {
