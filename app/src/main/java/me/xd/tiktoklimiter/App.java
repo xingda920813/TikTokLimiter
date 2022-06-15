@@ -42,10 +42,8 @@ public class App extends Application {
 
     private void killApps() {
         final ActivityManager am = getSystemService(ActivityManager.class);
-        for (int i = 0; i < 2; i++) {
-            for (final String pkg : PACKAGES) {
-                am.killBackgroundProcesses(pkg);
-            }
+        for (final String pkg : PACKAGES) {
+            am.killBackgroundProcesses(pkg);
         }
     }
 
